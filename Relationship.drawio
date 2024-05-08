@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-05-08T13:37:08.617Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15" etag="XzgN45_FCA4f4i-FiyIp" version="24.3.1" type="github">
+<mxfile host="app.diagrams.net" modified="2024-05-08T13:37:49.298Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15" etag="pSvB2eOiEbcB8K3LOhQo" version="24.3.1" type="github">
   <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
     <mxGraphModel dx="1105" dy="1407" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
       <root>
@@ -225,7 +225,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="LqWmHnhMWyabP87e0URE-82" value="ClassEnrollments" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1400" y="240" width="440" height="120" as="geometry" />
+          <mxGeometry x="1400" y="200" width="440" height="120" as="geometry" />
         </mxCell>
         <mxCell id="LqWmHnhMWyabP87e0URE-83" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;" vertex="1" parent="LqWmHnhMWyabP87e0URE-82">
           <mxGeometry y="30" width="440" height="30" as="geometry" />
