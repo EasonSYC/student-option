@@ -33,6 +33,7 @@ INSERT INTO Teachers VALUES ('Ms', 'Elizabeth', 'Brown', 'MA European History')
 INSERT INTO Teachers VALUES ('Mr', 'Daniel', 'Smith', 'BA Ancient History')
 INSERT INTO Teachers VALUES ('Dr', 'Emmy', 'Johnson', 'PhD American History')
 INSERT INTO Teachers VALUES ('Ms', 'Sophia', 'Davis', 'MA World History')
+GO
 
 INSERT INTO Teachers VALUES ('Dr', 'David', 'Roberts', 'PhD Physical Geography')
 INSERT INTO Teachers VALUES ('Ms', 'Emma', 'Wilson', 'MSc Human Geography')
