@@ -1,0 +1,60 @@
+CREATE TABLE ExamBoards
+(
+    ExamBoardID INT NOT NULL PRIMARY KEY IDENTITY(1, 1),
+    ExamBoardName VARCHAR(20) NOT NULL UNIQUE
+)
+GO
+
+CREATE TABLE Categories
+(
+    CategoryID INT NOT NULL PRIMARY KEY IDENTITY(1, 1),
+    CategoryName VARCHAR(20) NOT NULL UNIQUE
+)
+GO
+
+CREATE TABLE Courses
+(
+    CourseID INT NOT NULL PRIMARY KEY IDENTITY(1, 1),
+    Title VARCHAR(20) NOT NULL UNIQUE,
+    CategoryID INT NOT NULL FOREIGN KEY REFERENCES Categories(CategoryID),
+    ExamBoardID INT NOT NULL FOREIGN KEY REFERENCES ExamBoards(ExamBoardID)
+)
+GO
+
+CREATE TABLE Students
+(
+    StudentID INT NOT NULL PRIMARY KEY IDENTITY(1, 1),
+    FirstName VARCHAR(20) NOT NULL,
+    LastName VARCHAR(20) NOT NULL,
+    DateOfBirth DATE NOT NULL,
+    UNIQUE(FirstName, LastName, DateOfBirth)
+)
+GO
+
+CREATE TABLE Teachers
+(
+    TeacherID INT NOT NULL PRIMARY KEY IDENTITY(1, 1),
+    Title VARCHAR(10) NOT NULL,
+    FirstName VARCHAR(20) NOT NULL,
+    LastName VARCHAR(20) NOT NULL,
+    Qualification VARCHAR(20) NOT NULL,
+    UNIQUE(FirstName, LastName)
+)
+GO
+
+CREATE TABLE Classes
+(
+    ClassID INT NOT NULL PRIMARY KEY IDENTITY(1, 1),
+    TeacherID INT NOT NULL FOREIGN KEY REFERENCES Teachers(TeacherID),
+    CourseID INT NOT NULL FOREIGN KEY REFERENCES Courses(CourseID)
+)
+GO
+
+CREATE TABLE ClassEnrollments
+(
+    ClassEnrollmentID INT NOT NULL PRIMARY KEY IDENTITY(1, 1),
+    StudentID INT NOT NULL FOREIGN KEY REFERENCES Students(StudentID),
+    ClassID INT NOT NULL FOREIGN KEY REFERENCES Classes(ClassID),
+    UNIQUE(StudentID, ClassID)
+)
+GO
