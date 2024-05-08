@@ -8,7 +8,7 @@ GO
 CREATE TABLE Categories
 (
     CategoryID INT NOT NULL PRIMARY KEY IDENTITY(1, 1),
-    CategoryName VARCHAR(20) NOT NULL UNIQUE
+    CategoryName VARCHAR(30) NOT NULL UNIQUE
 )
 GO
 
