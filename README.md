@@ -2,6 +2,17 @@
 
 ## Database Design
 
+### Categories
+
+1. **CategoryID**: Primary Key, Unique, Not Null, Auto-Increment; Int.
+2. **CategoryName**: Not Null, Unique; VarChar(30).
+
+### ExamBoards
+
+1. **ExamBoardID**: Primary Key, Unique, Not Null, Auto-Increment; Int.
+2. **ExamBoardName**: Not Null, Unique; VarChar(20).
+
+
 ### Courses
 
 1. **CourseID**: Primary Key, Unique, Not Null, Auto-Increment; Int.
@@ -41,13 +52,3 @@ Unique Constraint: FirstName, LastName.
 3. **ClassID**: Foreign Key (Classes.ClassID), Not Null; Int.
 
 Unique Constraint: StudentID, ClassID.
-
-### Categories
-
-1. **CategoryID**: Primary Key, Unique, Not Null, Auto-Increment; Int.
-2. **CategoryName**: Not Null, Unique; VarChar(30).
-
-### ExamBoards
-
-1. **ExamBoardID**: Primary Key, Unique, Not Null, Auto-Increment; Int.
-2. **ExamBoardName**: Not Null, Unique; VarChar(20).
