@@ -45,9 +45,9 @@ Unique Constraint: StudentID, ClassID.
 ### Categories
 
 1. **CategoryID**: Primary Key, Unique, Not Null, Auto-Increment; Int.
-2. **Name**: Not Null, Unique; VarChar(20).
+2. **CategoryName**: Not Null, Unique; VarChar(20).
 
 ### ExamBoards
 
 1. **ExamBoardID**: Primary Key, Unique, Not Null, Auto-Increment; Int.
-2. **Name**: Not Null, Unique; VarChar(20).
+2. **ExamBoardName**: Not Null, Unique; VarChar(20).
