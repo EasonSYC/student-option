@@ -24,7 +24,7 @@ Unique Constraint: FirstName, LastName, DateOfBirth.
 2. **Title**: Not Null; VarChar(10).
 3. **FirstName**: Not Null; VarChar(20).
 4. **LastName**: Not Null; VarChar(20).
-5. **Qualification**: Not Null, VarChar(20).
+5. **Qualification**: Not Null, VarChar(50).
 
 Unique Constraint: FirstName, LastName.
 

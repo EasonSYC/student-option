@@ -37,7 +37,7 @@ CREATE TABLE Teachers
     Title VARCHAR(10) NOT NULL,
     FirstName VARCHAR(20) NOT NULL,
     LastName VARCHAR(20) NOT NULL,
-    Qualification VARCHAR(20) NOT NULL,
+    Qualification VARCHAR(50) NOT NULL,
     UNIQUE(FirstName, LastName)
 )
 GO
