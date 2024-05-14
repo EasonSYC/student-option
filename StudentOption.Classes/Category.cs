@@ -1,6 +1,9 @@
 ﻿namespace StudentOption.Classes;
 
-public class Class1
+public class Category(string categoryName)
 {
-
+    public string CategoryName
+    {
+        get;
+    } = categoryName;
 }
