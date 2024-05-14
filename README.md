@@ -12,7 +12,6 @@
 1. **ExamBoardID**: Primary Key, Unique, Not Null, Auto-Increment; Int.
 2. **ExamBoardName**: Not Null, Unique; VarChar(20).
 
-
 ### Courses
 
 1. **CourseID**: Primary Key, Unique, Not Null, Auto-Increment; Int.
