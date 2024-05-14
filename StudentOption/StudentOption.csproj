@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../StudentOption.Application/StudentOption.Application.csproj" />
-    <ProjectReference Include="..\StudentOption.Data\StudentOption.Data.csproj" />
+    <ProjectReference Include="../StudentOption.Data/StudentOption.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
