@@ -125,8 +125,6 @@ INSERT INTO ClassEnrollments VALUES (24, 23)
 INSERT INTO ClassEnrollments VALUES (25, 23)
 GO
 
-
-
 INSERT INTO ClassEnrollments VALUES (1, 24)
 INSERT INTO ClassEnrollments VALUES (2, 24)
 INSERT INTO ClassEnrollments VALUES (3, 24)

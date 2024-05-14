@@ -1,8 +1,8 @@
 SELECT s.*
-FROM Classes c, ClassEnrollments ce, Students s, Courses cs
-WHERE ce.ClassID = c.ClassID
-AND ce.StudentID = s.StudentID
-AND c.CourseID = cs.CourseID
-AND cs.Title = 'Computing'
+FROM ClassSets cs, ClassEnrollments ce, Students s, Courses c
+WHERE ce.ClassSetID = cs.ClassSetID
+    AND ce.StudentID = s.StudentID
+    AND cs.CourseID = c.CourseID
+    AND c.Title = 'Computing'
 
 -- Find all students studying computing --
