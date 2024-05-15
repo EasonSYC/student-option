@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Globalization;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using StudentOption.Classes;
 
 namespace StudentOption.Data;
