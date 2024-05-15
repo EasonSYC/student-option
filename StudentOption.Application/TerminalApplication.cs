@@ -6,8 +6,17 @@ using System.Text;
 
 public class TerminalApplication(string connectionString)
 {
-    private const string _waitToContinueText = "Press enter to continue ...";
+    #region ConstStrings // TO-DO: Output formatting
 
+    private const string _coursesText = "There are the following courses:";
+    private const string _courseHeadersText = "ID\tTitle\tCategory\tExam Board"; 
+    private const string _coursePromptText = "Please input the desired Course ID:";
+    private const string _classSetText = "There are the following class sets for Course ID @1, Name @2, Category @3, Exam Board @4:";
+    private const string _classSetHeadersText = "ID\tTeacher";
+    private const string _classSetPromptText = "Please input the desired Class Set ID:";
+    private const string _studentText = "There are the following students for Class Set ID @1 in Subject @2 with Teacher @3:";
+    private const string _studentHeadersText = "ID\tName\tDate of Birth";
+    private const string _waitToContinueText = "Press enter to continue ...";
     private const string _mainPromptText = @"Please input the relavant number to execute the relavant function.
 1. Display classes for a course subject.
 2. Display students enrolled in a class.
@@ -20,6 +29,7 @@ public class TerminalApplication(string connectionString)
 
 Please input your choice:";
 
+    #endregion
     private readonly StudentOptionDB _dataBase = new(connectionString);
     public void MainInterface()
     {
@@ -64,14 +74,7 @@ Please input your choice:";
         }
     }
 
-    private const string _coursesText = "There are the following courses:";
-    private const string _courseHeadersText = "ID\tTitle\tCategory\tExam Board"; // TO-DO: Output formatting
-    private const string _coursePromptText = "Please input the desired Course ID:";
-    private const string _classSetText = "There are the following class sets for Course ID @1, Name @2, Category @3, Exam Board @4:";
-    private const string _classSetHeadersText = "ID\tTeacher";
-    private const string _classSetPromptText = "Please input the desired Class Set ID:";
-    private const string _studentText = "There are the following students for Class Set ID @1 in Subject @2 with Teacher @3:";
-    private const string _studentHeadersText = "ID\tName\tDate of Birth";
+    #region DisplayMethods
 
     private string DisplayCourses()
     {
@@ -119,6 +122,10 @@ Please input your choice:";
 
         return sb.ToString();
     }
+
+    #endregion
+
+    #region ChooseInterfaces
 
     private Course ChooseCourseInterface()
     {
@@ -168,6 +175,10 @@ Please input your choice:";
         return classSetChoice;
     }
 
+    #endregion
+
+    #region FunctionalInteraces
+
     private void ClassFromCourseInterface()
     {
         Course courseChoice = ChooseCourseInterface();
@@ -213,4 +224,6 @@ Please input your choice:";
     {
         throw new NotImplementedException();
     }
+
+    #endregion
 }
