@@ -130,7 +130,7 @@ Please input your choice:";
     private Course ChooseCourseInterface()
     {
         bool valid = false;
-        Course courseChoice = new(0, string.Empty, string.Empty, string.Empty);
+        Course courseChoice = Course.Default;
         string displayCourses = DisplayCourses();
 
         while (!valid)
@@ -154,7 +154,7 @@ Please input your choice:";
     private ClassSet ChooseClassSetFromCourseInterface(Course course)
     {
         bool valid = false;
-        ClassSet classSetChoice = new(0, new(0, string.Empty, string.Empty, string.Empty), new(0, string.Empty, string.Empty, string.Empty, string.Empty));
+        ClassSet classSetChoice = ClassSet.Default;
         string displayClassSetsFromCourse = DisplayClassSetsFromCourse(course);
 
         while (!valid)
