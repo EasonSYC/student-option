@@ -6,7 +6,7 @@ public class Teacher(int id, string title, string firstName, string lastName, st
     {
         get;
     } = id;
-    
+
     public string Title
     {
         get;
@@ -26,4 +26,6 @@ public class Teacher(int id, string title, string firstName, string lastName, st
     {
         get;
     } = qualification;
+
+    public static readonly Teacher Default = new(0, string.Empty, string.Empty, string.Empty, string.Empty);
 }

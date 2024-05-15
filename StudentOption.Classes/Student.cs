@@ -6,7 +6,7 @@ public class Student(int id, string firstName, string lastName, DateOnly dateOfB
     {
         get;
     } = id;
-    
+
     public string FirstName
     {
         get;
@@ -21,4 +21,6 @@ public class Student(int id, string firstName, string lastName, DateOnly dateOfB
     {
         get;
     } = dateOfBirth;
+
+    public static readonly Student Default = new(0, string.Empty, string.Empty, new());
 }

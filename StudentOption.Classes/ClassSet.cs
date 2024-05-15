@@ -6,7 +6,7 @@ public class ClassSet(int id, Course course, Teacher teacher)
     {
         get;
     } = id;
-    
+
     public Course Course
     {
         get;
@@ -16,4 +16,6 @@ public class ClassSet(int id, Course course, Teacher teacher)
     {
         get;
     } = teacher;
+
+    public static readonly ClassSet Default = new(0, Course.Default, Teacher.Default);
 }

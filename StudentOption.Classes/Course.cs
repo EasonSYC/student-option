@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace StudentOption.Classes;
+﻿namespace StudentOption.Classes;
 
 public class Course(int id, string category, string examBoard, string title)
 {
@@ -23,4 +21,6 @@ public class Course(int id, string category, string examBoard, string title)
     {
         get;
     } = title;
+
+    public static readonly Course Default = new(0, string.Empty, string.Empty, string.Empty);
 }
