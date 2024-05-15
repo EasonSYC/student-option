@@ -9,7 +9,7 @@ public class TerminalApplication(string connectionString)
     #region ConstStrings // TO-DO: Output formatting
 
     private const string _coursesText = "There are the following courses:";
-    private const string _courseHeadersText = "ID\tTitle\tCategory\tExam Board"; 
+    private const string _courseHeadersText = "ID\tTitle\tCategory\tExam Board";
     private const string _coursePromptText = "Please input the desired Course ID:";
     private const string _classSetText = "There are the following class sets for Course ID @1, Name @2, Category @3, Exam Board @4:";
     private const string _classSetHeadersText = "ID\tTeacher";
