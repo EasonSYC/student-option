@@ -1,7 +1,12 @@
 ﻿namespace StudentOption.Classes;
 
-public class ClassSet(Course course, Teacher teacher)
+public class ClassSet(int id, Course course, Teacher teacher)
 {
+    public int ID
+    {
+        get;
+    } = id;
+    
     public Course Course
     {
         get;

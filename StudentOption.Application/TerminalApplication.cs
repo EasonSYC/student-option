@@ -1,9 +1,10 @@
 ﻿namespace StudentOption.Application;
 
 using StudentOption.Data;
-using Microsoft.Extensions.Configuration;
+using StudentOption.Classes;
+using System.Text;
 
-public class TerminalApplication
+public class TerminalApplication(string connectionString)
 {
     private const string _waitToContinueText = "Press enter to continue ...";
 
@@ -19,13 +20,8 @@ public class TerminalApplication
 
 Please input your choice:";
 
-    private static StudentOptionDB GetDataBase()
-    {
-        var config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
-        string connectionString = config["ConnectionStrings:studentDb"] ?? string.Empty;
-        return new(connectionString);
-    }
-    public static void MainInterface()
+    private readonly StudentOptionDB _dataBase = new(connectionString);
+    public void MainInterface()
     {
         int choice = -1;
         while (choice != 0)
@@ -70,51 +66,115 @@ Please input your choice:";
 
     private const string _coursesText = "There are the following courses:";
     private const string _courseHeadersText = "ID\tTitle\tCategory\tExam Board"; // TO-DO: Output formatting
-    private const string _coursePromptText = "Please input the desired course ID:";
-    private const string _classSetText = "There are the following class sets:";
-
+    private const string _coursePromptText = "Please input the desired Course ID:";
+    private const string _classSetText = "There are the following class sets for Course ID @1, Name @2, Category @3, Exam Board @4:";
     private const string _classSetHeadersText = "ID\tTeacher";
-    private static void ClassFromCourseInterface()
-    {   
-        StudentOptionDB dataBase = GetDataBase();
-        List<(int id, string title, string category, string examBoard)> courses = dataBase.GetCourses();
+    private const string _classSetPromptText = "Please input the desired Class Set ID:";
+    private const string _studentText = "There are the following students for Class Set ID @1 in Subject @2 with Teacher @3:";
+    private const string _studentHeadersText = "ID\tName\tDate of Birth";
 
+    private string DisplayCourses()
+    {
+        StringBuilder sb = new();
+        List<Course> courses = _dataBase.GetCourses();
+
+        sb.AppendLine(_coursesText);
+        sb.AppendLine(_courseHeadersText);
+        foreach (Course course in courses)
+        {
+            sb.AppendLine($"{course.ID}\t{course.Title}\t{course.Category}\t{course.ExamBoard}");
+        }
+
+        return sb.ToString();
+    }
+
+    private string DisplayClassSetsFromCourse(Course course)
+    {
+        StringBuilder sb = new();
+        List<ClassSet> classSets = _dataBase.GetClassSetsFromCoruse(course);
+
+        sb.AppendLine(_classSetText.Replace("@1", course.ID.ToString()).Replace("@2", course.Title).Replace("@3", course.Category).Replace("@4", course.ExamBoard));
+
+        sb.AppendLine(_classSetHeadersText);
+        foreach (ClassSet classSet in classSets)
+        {
+            sb.AppendLine($"{classSet.ID}\t{classSet.Teacher.Title} {classSet.Teacher.FirstName} {classSet.Teacher.LastName}");
+        }
+
+        return sb.ToString();
+    }
+
+    private string DisplayStudentsFromClassSet(ClassSet classSet)
+    {
+        StringBuilder sb = new();
+        List<Student> students = _dataBase.GetStudentsFromClassSet(classSet);
+
+        sb.AppendLine(_studentText.Replace("@1", classSet.ID.ToString()).Replace("@2", classSet.Course.Title).Replace("@3", $"{classSet.Teacher.Title} {classSet.Teacher.FirstName} {classSet.Teacher.LastName}"));
+
+        sb.AppendLine(_studentHeadersText);
+        foreach (Student student in students)
+        {
+            sb.AppendLine($"{student.ID}\t{student.FirstName} {student.LastName}\t{student.DateOfBirth}");
+        }
+
+        return sb.ToString();
+    }
+
+    private Course ChooseCourseInterface()
+    {
         bool valid = false;
-        int choice = -1;
+        Course courseChoice = new(0, string.Empty, string.Empty, string.Empty);
+        string displayCourses = DisplayCourses();
 
         while (!valid)
         {
             Console.Clear();
-            Console.WriteLine(_coursesText);
-            Console.WriteLine(_courseHeadersText);
-            foreach ((int id, string title, string category, string examBoard) in courses)
-            {
-                Console.WriteLine($"{id}\t{title}\t{category}\t{examBoard}");
-            }
+            Console.WriteLine(displayCourses);
 
             Console.WriteLine(_coursePromptText);
             string input = Console.ReadLine() ?? string.Empty;
 
-            if (int.TryParse(input, out choice))
+            if (int.TryParse(input, out int idChoice) && _dataBase.ExistCourseID(idChoice))
             {
-                foreach ((int id, string title, string category, string examBoard) in courses)
-                {
-                    if (id == choice)
-                    {
-                        valid = true;
-                    }
-                }
+                courseChoice = _dataBase.GetCourseByID(idChoice);
+                valid = true;
             }
         }
 
-        List<(int id, string title, string firstName, string lastName, string)> classSets = dataBase.GetClassSetsFromCoruseID(choice);
+        return courseChoice;
+    }
 
-        Console.WriteLine(_classSetText);
-        Console.WriteLine(_classSetHeadersText);
-        foreach ((int id, string title, string firstName, string lastName, _) in classSets)
+    private ClassSet ChooseClassSetFromCourseInterface(Course course)
+    {
+        bool valid = false;
+        ClassSet classSetChoice = new(0, new(0, string.Empty, string.Empty, string.Empty), new(0, string.Empty, string.Empty, string.Empty, string.Empty));
+        string displayClassSetsFromCourse = DisplayClassSetsFromCourse(course);
+
+        while (!valid)
         {
-            Console.WriteLine($"{id}\t{title} {firstName} {lastName}");
+            Console.Clear();
+            Console.WriteLine(displayClassSetsFromCourse);
+
+            Console.WriteLine(_classSetPromptText);
+            string input = Console.ReadLine() ?? string.Empty;
+
+            if (int.TryParse(input, out int idChoice) && _dataBase.ExistClassSetIDWithCourse(course, idChoice))
+            {
+                classSetChoice = _dataBase.GetClassSetByIDWithCourse(course, idChoice);
+                valid = true;
+            }
         }
+
+        return classSetChoice;
+    }
+
+    private void ClassFromCourseInterface()
+    {
+        Course courseChoice = ChooseCourseInterface();
+        string displayClassSets = DisplayClassSetsFromCourse(courseChoice);
+
+        Console.Clear();
+        Console.WriteLine(displayClassSets);
 
         Console.WriteLine(_waitToContinueText);
         Console.ReadLine();
@@ -122,27 +182,34 @@ Please input your choice:";
         return;
     }
 
-    private static void StudentFromClassInterface()
+    private void StudentFromClassInterface()
+    {
+        ClassSet classSetChoice = ChooseClassSetFromCourseInterface(ChooseCourseInterface());
+        string displayStudentsFromClassSet = DisplayStudentsFromClassSet(classSetChoice);
+
+        Console.Clear();
+        Console.WriteLine(displayStudentsFromClassSet);
+
+        Console.WriteLine(_waitToContinueText);
+        Console.ReadLine();
+    }
+
+    private void ClassFromStudentInterface()
     {
         throw new NotImplementedException();
     }
 
-    private static void ClassFromStudentInterface()
+    private void EditInterface()
     {
         throw new NotImplementedException();
     }
 
-    private static void EditInterface()
+    private void ValidateClassInterface()
     {
         throw new NotImplementedException();
     }
 
-    private static void ValidateClassInterface()
-    {
-        throw new NotImplementedException();
-    }
-
-    private static void ValidateStudentInterface()
+    private void ValidateStudentInterface()
     {
         throw new NotImplementedException();
     }

@@ -2,14 +2,19 @@
 
 namespace StudentOption.Classes;
 
-public class Course(Category category, ExamBoard examBoard, string title)
+public class Course(int id, string category, string examBoard, string title)
 {
-    public Category Category
+    public int ID
+    {
+        get;
+    } = id;
+
+    public string Category
     {
         get;
     } = category;
 
-    public ExamBoard ExamBoard
+    public string ExamBoard
     {
         get;
     } = examBoard;

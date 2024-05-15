@@ -1,7 +1,12 @@
 ﻿namespace StudentOption.Classes;
 
-public class Student(string firstName, string lastName, DateOnly dateOfBirth)
+public class Student(int id, string firstName, string lastName, DateOnly dateOfBirth)
 {
+    public int ID
+    {
+        get;
+    } = id;
+    
     public string FirstName
     {
         get;
