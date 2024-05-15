@@ -7,6 +7,8 @@ public class StudentOptionDB(string connectionString)
 {
     private readonly string _connectionString = connectionString;
 
+    #region GetList
+
     public List<Course> GetCourses()
     {
         List<Course> courses = [];
@@ -64,6 +66,39 @@ public class StudentOptionDB(string connectionString)
         return classSets;
     }
 
+    public List<Student> GetStudentsFromClassSet(ClassSet classSet)
+    {
+        List<Student> students = [];
+        using (SqlConnection connection = new())
+        {
+            connection.ConnectionString = _connectionString;
+            connection.Open();
+            SqlCommand command = connection.CreateCommand();
+            command.CommandText = @$"
+            SELECT s.StudentID, s.FirstName, s.LastName, s.DateOfBirth
+            FROM dbo.Students s, dbo.ClassEnrollments ce, dbo.ClassSets cls
+            WHERE cls.ClassSetID = ce.ClassSetID
+            AND ce.StudentID = s.StudentID
+            AND cls.ClassSetID = {classSet.ID}";
+            var dataReader = command.ExecuteReader();
+            while (dataReader.Read())
+            {
+                int id = dataReader.GetInt32(0);
+                string firstName = dataReader.GetString(1);
+                string lastName = dataReader.GetString(2);
+                DateOnly dateOfBirth = DateOnly.FromDateTime(dataReader.GetDateTime(3));
+
+                students.Add(new(id, firstName, lastName, dateOfBirth));
+            }
+        }
+
+        return students;
+    }
+
+    #endregion
+
+    #region GetSpecific
+
     public Course GetCourseByID(int courseID)
     {
         string title = string.Empty, category = string.Empty, examBoard = string.Empty;
@@ -89,6 +124,40 @@ public class StudentOptionDB(string connectionString)
 
         return new(courseID, category, examBoard, title);
     }
+
+    public ClassSet GetClassSetByIDWithCourse(Course course, int classSetID)
+    {
+        int teacherID = 0;
+        string title = string.Empty, firstName = string.Empty, lastName = string.Empty, qualification = string.Empty;
+
+        using (SqlConnection connection = new())
+        {
+            connection.ConnectionString = _connectionString;
+            connection.Open();
+            SqlCommand command = connection.CreateCommand();
+            command.CommandText = @$"
+            SELECT t.TeacherID, t.Title, t.FirstName, t.LastName, t.Qualification
+            FROM dbo.Courses cs, dbo.Teachers t, dbo.ClassSets cls
+            WHERE cls.CourseID = cs.CourseID
+            AND cls.TeacherID = t.TeacherID
+            AND cls.ClassSetID = {classSetID}";
+            var dataReader = command.ExecuteReader();
+            while (dataReader.Read())
+            {
+                teacherID = dataReader.GetInt32(0);
+                title = dataReader.GetString(1);
+                firstName = dataReader.GetString(2);
+                lastName = dataReader.GetString(3);
+                qualification = dataReader.GetString(4);
+            }
+        }
+
+        return new(classSetID, course, new(teacherID, title, firstName, lastName, qualification));
+    }
+
+    #endregion
+
+    #region CheckExistance
 
     public bool ExistCourseID(int id)
     {
@@ -135,62 +204,5 @@ public class StudentOptionDB(string connectionString)
         return num != 0;
     }
 
-    public ClassSet GetClassSetByIDWithCourse(Course course, int classSetID)
-    {
-        int teacherID = 0;
-        string title = string.Empty, firstName = string.Empty, lastName = string.Empty, qualification = string.Empty;
-
-        using (SqlConnection connection = new())
-        {
-            connection.ConnectionString = _connectionString;
-            connection.Open();
-            SqlCommand command = connection.CreateCommand();
-            command.CommandText = @$"
-            SELECT t.TeacherID, t.Title, t.FirstName, t.LastName, t.Qualification
-            FROM dbo.Courses cs, dbo.Teachers t, dbo.ClassSets cls
-            WHERE cls.CourseID = cs.CourseID
-            AND cls.TeacherID = t.TeacherID
-            AND cls.ClassSetID = {classSetID}";
-            var dataReader = command.ExecuteReader();
-            while (dataReader.Read())
-            {
-                teacherID = dataReader.GetInt32(0);
-                title = dataReader.GetString(1);
-                firstName = dataReader.GetString(2);
-                lastName = dataReader.GetString(3);
-                qualification = dataReader.GetString(4);
-            }
-        }
-
-        return new(classSetID, course, new(teacherID, title, firstName, lastName, qualification));
-    }
-
-    public List<Student> GetStudentsFromClassSet(ClassSet classSet)
-    {
-        List<Student> students = [];
-        using (SqlConnection connection = new())
-        {
-            connection.ConnectionString = _connectionString;
-            connection.Open();
-            SqlCommand command = connection.CreateCommand();
-            command.CommandText = @$"
-            SELECT s.StudentID, s.FirstName, s.LastName, s.DateOfBirth
-            FROM dbo.Students s, dbo.ClassEnrollments ce, dbo.ClassSets cls
-            WHERE cls.ClassSetID = ce.ClassSetID
-            AND ce.StudentID = s.StudentID
-            AND cls.ClassSetID = {classSet.ID}";
-            var dataReader = command.ExecuteReader();
-            while (dataReader.Read())
-            {
-                int id = dataReader.GetInt32(0);
-                string firstName = dataReader.GetString(1);
-                string lastName = dataReader.GetString(2);
-                DateOnly dateOfBirth = DateOnly.FromDateTime(dataReader.GetDateTime(3));
-
-                students.Add(new(id, firstName, lastName, dateOfBirth));
-            }
-        }
-
-        return students;
-    }
+    #endregion
 }
