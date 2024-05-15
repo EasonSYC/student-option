@@ -69,11 +69,11 @@ Please input your choice:";
     }
 
     private const string _coursesText = "There are the following courses:";
-    private const string _courseHeadersText = "ID\tTitle\tCategory\tExam Board";
+    private const string _courseHeadersText = "ID\tTitle\tCategory\tExam Board"; // TO-DO: Output formatting
     private const string _coursePromptText = "Please input the desired course ID:";
     private const string _classSetText = "There are the following class sets:";
 
-    private const string _classSetHeadersText = "ID\tTitle\tFirst Name\tLast Name\tQualification";
+    private const string _classSetHeadersText = "ID\tTeacher";
     private static void ClassFromCourseInterface()
     {   
         StudentOptionDB dataBase = GetDataBase();
@@ -107,13 +107,13 @@ Please input your choice:";
             }
         }
 
-        List<(int id, string title, string firstName, string lastName, string qualification)> classSets = dataBase.GetClassSetsFromCoruseID(choice);
+        List<(int id, string title, string firstName, string lastName, string)> classSets = dataBase.GetClassSetsFromCoruseID(choice);
 
         Console.WriteLine(_classSetText);
         Console.WriteLine(_classSetHeadersText);
-        foreach ((int id, string title, string firstName, string lastName, string qualification) in classSets)
+        foreach ((int id, string title, string firstName, string lastName, _) in classSets)
         {
-            Console.WriteLine($"{id}\t{title}\t{firstName}\t{lastName}\t{qualification}");
+            Console.WriteLine($"{id}\t{title} {firstName} {lastName}");
         }
 
         Console.WriteLine(_waitToContinueText);
