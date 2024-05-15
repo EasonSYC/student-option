@@ -12,10 +12,14 @@ public class TerminalApplication(string connectionString)
     private const string _courseHeadersText = "ID\tTitle\tCategory\tExam Board";
     private const string _coursePromptText = "Please input the desired Course ID:";
     private const string _classSetText = "There are the following class sets for Course ID @1, Name @2, Category @3, Exam Board @4:";
+    private const string _classSetWithStudentText = "There are the following class sets for Student ID @1, Name @2, DoB @3:";
     private const string _classSetHeadersText = "ID\tTeacher";
+    private const string _classSetHeadersWithCourseText = "ID\tCourse\tTeacher";
     private const string _classSetPromptText = "Please input the desired Class Set ID:";
     private const string _studentText = "There are the following students for Class Set ID @1 in Subject @2 with Teacher @3:";
+    private const string _studentsText = "There are the following students:";
     private const string _studentHeadersText = "ID\tName\tDate of Birth";
+    private const string _studentPromptText = "Please input the desired Student ID:";
     private const string _waitToContinueText = "Press enter to continue ...";
     private const string _mainPromptText = @"Please input the relavant number to execute the relavant function.
 1. Display classes for a course subject.
@@ -123,6 +127,37 @@ Please input your choice:";
         return sb.ToString();
     }
 
+    private string DisplayStudents()
+    {
+        StringBuilder sb = new();
+        List<Student> students = _dataBase.GetStudents();
+
+        sb.AppendLine(_studentsText);
+        sb.AppendLine(_studentHeadersText);
+        foreach (Student student in students)
+        {
+            sb.AppendLine($"{student.ID}\t{student.FirstName} {student.LastName}\t{student.DateOfBirth}");
+        }
+
+        return sb.ToString();
+    }
+
+    private string DisplayClassSetsFromStudent(Student student)
+    {
+        StringBuilder sb = new();
+        List<ClassSet> classSets = _dataBase.GetClassSetsFromStudent(student);
+
+        sb.AppendLine(_classSetWithStudentText.Replace("@1", student.ID.ToString()).Replace("@2", $"{student.FirstName} {student.LastName}").Replace("@3", student.DateOfBirth.ToString()));
+
+        sb.AppendLine(_classSetHeadersWithCourseText);
+        foreach (ClassSet classSet in classSets)
+        {
+            sb.AppendLine($"{classSet.ID}\t{classSet.Course.Title}\t{classSet.Teacher.Title} {classSet.Teacher.FirstName} {classSet.Teacher.LastName}");
+        }
+
+        return sb.ToString();
+    }
+
     #endregion
 
     #region ChooseInterfaces
@@ -175,6 +210,30 @@ Please input your choice:";
         return classSetChoice;
     }
 
+    private Student ChooseStudentInterface()
+    {
+        bool valid = false;
+        Student studentChoice = Student.Default;
+        string displayStudents = DisplayStudents();
+
+        while (!valid)
+        {
+            Console.Clear();
+            Console.WriteLine(displayStudents);
+
+            Console.WriteLine(_studentPromptText);
+            string input = Console.ReadLine() ?? string.Empty;
+
+            if (int.TryParse(input, out int idChoice) && _dataBase.ExistStudentID(idChoice))
+            {
+                studentChoice = _dataBase.GetStudentByID(idChoice);
+                valid = true;
+            }
+        }
+
+        return studentChoice;
+    }
+
     #endregion
 
     #region FunctionalInteraces
@@ -207,7 +266,16 @@ Please input your choice:";
 
     private void ClassFromStudentInterface()
     {
-        throw new NotImplementedException();
+        Student studentChoice = ChooseStudentInterface();
+        string displayClassSetsFromStudent = DisplayClassSetsFromStudent(studentChoice);
+
+        Console.Clear();
+        Console.WriteLine(displayClassSetsFromStudent);
+
+        Console.WriteLine(_waitToContinueText);
+        Console.ReadLine();
+
+        return;
     }
 
     private void EditInterface()
