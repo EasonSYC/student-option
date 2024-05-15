@@ -1,7 +1,7 @@
 DROP TABLE ClassEnrollments
 GO
 
-DROP TABLE Classes
+DROP TABLE ClassSets
 DROP TABLE Students
 GO
 

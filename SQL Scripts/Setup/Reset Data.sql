@@ -1,7 +1,7 @@
 DELETE FROM ClassEnrollments
 GO
 
-DELETE FROM Classes
+DELETE FROM ClassSets
 DELETE FROM Students
 GO
 
