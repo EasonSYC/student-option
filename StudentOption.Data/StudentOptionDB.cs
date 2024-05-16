@@ -250,6 +250,34 @@ public class StudentOptionDB(string connectionString)
 
     #endregion
 
+    #region GetNumber
+
+    public int GetStudentNoByClassSet(ClassSet classSet)
+    {
+        int num = 0;
+        using (SqlConnection connection = new())
+        {
+            connection.ConnectionString = _connectionString;
+            connection.Open();
+            SqlCommand command = connection.CreateCommand();
+            command.CommandText = @$"
+            SELECT COUNT(*)
+            FROM dbo.Students s, dbo.ClassEnrollments ce, dbo.ClassSets cls
+            WHERE cls.ClassSetID = ce.ClassSetID
+            AND ce.StudentID = s.StudentID
+            AND cls.ClassSetID = {classSet.ID}";
+            var dataReader = command.ExecuteReader();
+            while (dataReader.Read())
+            {
+                num = dataReader.GetInt32(0);
+            }
+        }
+
+        return num;
+    }
+
+    #endregion GetNumber
+    
     #region CheckExistance
 
     public bool ExistCourseID(int id)

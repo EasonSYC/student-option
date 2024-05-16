@@ -3,6 +3,8 @@
 using StudentOption.Data;
 using StudentOption.Classes;
 using System.Text;
+using System.Data.Common;
+using System.Globalization;
 
 public class TerminalApplication(string connectionString)
 {
@@ -21,6 +23,9 @@ public class TerminalApplication(string connectionString)
     private const string _studentHeadersText = "ID\tName\tDate of Birth";
     private const string _studentPromptText = "Please input the desired Student ID:";
     private const string _waitToContinueText = "Press enter to continue ...";
+    private const string _studentValidateText = "There are @0 students for Class Set ID @1 in Subject @2 with Teacher @3.";
+    private const string _validText = "It is valid.";
+    private const string _invalidText = "It is invalid.";
     private const string _mainPromptText = @"Please input the relavant number to execute the relavant function.
 1. Display classes for a course subject.
 2. Display students enrolled in a class.
@@ -76,6 +81,8 @@ Please input your choice:";
                 choice = -1;
             }
         }
+
+        return;
     }
 
     #region DisplayMethods
@@ -262,6 +269,8 @@ Please input your choice:";
 
         Console.WriteLine(_waitToContinueText);
         Console.ReadLine();
+
+        return;
     }
 
     private void ClassFromStudentInterface()
@@ -283,9 +292,30 @@ Please input your choice:";
         throw new NotImplementedException();
     }
 
+    private const int _minStudentNo = 5;
+    private const int _maxStudentNo = 15;
+
     private void ValidateClassInterface()
     {
-        throw new NotImplementedException();
+        ClassSet classSet = ChooseClassSetFromCourseInterface(ChooseCourseInterface());
+        int studentNo = _dataBase.GetStudentNoByClassSet(classSet);
+
+        Console.Clear();
+        Console.WriteLine(_studentValidateText.Replace("@0", studentNo.ToString()).Replace("@1", classSet.ID.ToString()).Replace("@2", classSet.Course.Title).Replace("@3", $"{classSet.Teacher.Title} {classSet.Teacher.FirstName} {classSet.Teacher.LastName}"));
+
+        if (studentNo >= _minStudentNo && studentNo <= _maxStudentNo)
+        {
+            Console.WriteLine(_validText);
+        }
+        else
+        {
+            Console.WriteLine(_invalidText);
+        }
+
+        Console.WriteLine(_waitToContinueText);
+        Console.ReadLine();
+
+        return;
     }
 
     private void ValidateStudentInterface()
