@@ -28,9 +28,9 @@ public class TerminalApplication(string connectionString)
 1. Display classes for a course subject.
 2. Display students enrolled in a class.
 3. Display the classes a student is enrolled in.
-4. Add/Remove/Update data.
+4. Add/Remove/Update data. *** NOT IMPLEMENTED ***
 5. Validate class for number of students enrolled.
-6. Validate student subject choices.
+6. Validate student subject choices. *** NOT IMPLEMENTED ***
 
 0. Exit
 
@@ -50,29 +50,47 @@ Please input your choice:";
 
             if (int.TryParse(input, out choice) && choice >= 0 && choice <= 6)
             {
-                switch (choice)
+                try
                 {
-                    case 1:
-                        ClassFromCourseInterface();
-                        break;
-                    case 2:
-                        StudentFromClassInterface();
-                        break;
-                    case 3:
-                        ClassFromStudentInterface();
-                        break;
-                    case 4:
-                        EditInterface();
-                        break;
-                    case 5:
-                        ValidateClassInterface();
-                        break;
-                    case 6:
-                        ValidateStudentInterface();
-                        break;
-                    default:
-                        break;
+                    switch (choice)
+                    {
+                        case 1:
+                            ClassFromCourseInterface();
+                            break;
+                        case 2:
+                            StudentFromClassInterface();
+                            break;
+                        case 3:
+                            ClassFromStudentInterface();
+                            break;
+                        case 4:
+                            EditInterface();
+                            break;
+                        case 5:
+                            ValidateClassInterface();
+                            break;
+                        case 6:
+                            ValidateStudentInterface();
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                catch (NotImplementedException e)
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Not Implemented: {e.Source}, {e.Message}");
+                    Console.WriteLine(_waitToContinueText);
+                    Console.ReadLine();
+                }
+                catch (Exception e)
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Exception: {e.Source}, {e.Message}");
+                    Console.WriteLine(_waitToContinueText);
+                    Console.ReadLine();
+                }
+
             }
             else
             {
