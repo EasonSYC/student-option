@@ -15,7 +15,7 @@
 ### Courses
 
 1. **CourseID**: Primary Key, Unique, Not Null, Auto-Increment; Int.
-2. **Title**: Unique, Not Null; VarChar(20).
+2. **Title**: Unique, Not Null; VarChar(30).
 3. **CategoryID**: Foreign Key (Categories.CategoryID), Not Null; Int.
 4. **ExamBoardID**: Foreign Key (ExamBoards.ExamBoardID), Not Null; Int.
 
