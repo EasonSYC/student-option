@@ -277,7 +277,7 @@ public class StudentOptionDB(string connectionString)
     }
 
     #endregion GetNumber
-    
+
     #region CheckExistance
 
     public bool ExistCourseID(int id)
@@ -325,7 +325,8 @@ public class StudentOptionDB(string connectionString)
         return num != 0;
     }
 
-    public bool ExistStudentID(int id){
+    public bool ExistStudentID(int id)
+    {
         int num = 0;
         using (SqlConnection connection = new())
         {

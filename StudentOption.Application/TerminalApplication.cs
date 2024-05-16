@@ -3,8 +3,6 @@
 using StudentOption.Data;
 using StudentOption.Classes;
 using System.Text;
-using System.Data.Common;
-using System.Globalization;
 
 public class TerminalApplication(string connectionString)
 {
