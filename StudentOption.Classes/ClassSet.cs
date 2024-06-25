@@ -2,7 +2,7 @@
 
 public class ClassSet(int id, Course course, Teacher teacher)
 {
-    public int ID
+    public int Id
     {
         get;
     } = id;

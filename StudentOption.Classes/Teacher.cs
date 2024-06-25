@@ -2,7 +2,7 @@
 
 public class Teacher(int id, string title, string firstName, string lastName, string qualification)
 {
-    public int ID
+    public int Id
     {
         get;
     } = id;

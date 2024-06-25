@@ -2,7 +2,7 @@
 
 public class Student(int id, string firstName, string lastName, DateOnly dateOfBirth)
 {
-    public int ID
+    public int Id
     {
         get;
     } = id;

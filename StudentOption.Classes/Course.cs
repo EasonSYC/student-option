@@ -2,7 +2,7 @@
 
 public class Course(int id, string category, string examBoard, string title)
 {
-    public int ID
+    public int Id
     {
         get;
     } = id;
