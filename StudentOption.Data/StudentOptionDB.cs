@@ -37,7 +37,6 @@ public class StudentOptionDB(string connectionString)
 
         return courses;
     }
-
     public async Task<List<Student>> GetStudentsAsync()
     {
         List<Student> students = [];
@@ -64,7 +63,6 @@ public class StudentOptionDB(string connectionString)
 
         return students;
     }
-
     public async Task<List<ClassSet>> GetClassSetsFromCoruseAsync(Course course)
     {
         List<ClassSet> classSets = [];
@@ -96,7 +94,6 @@ public class StudentOptionDB(string connectionString)
 
         return classSets;
     }
-
     public async Task<List<Student>> GetStudentsFromClassSetAsync(ClassSet classSet)
     {
         List<Student> students = [];
@@ -127,7 +124,6 @@ public class StudentOptionDB(string connectionString)
 
         return students;
     }
-
     public async Task<List<ClassSet>> GetClassSetsFromStudentAsync(Student student)
     {
         List<ClassSet> classSets = [];
@@ -197,7 +193,6 @@ public class StudentOptionDB(string connectionString)
 
         return new(courseId, category, examBoard, title);
     }
-
     public async Task<ClassSet> GetClassSetByIdWithCourseAsync(Course course, int classSetId)
     {
         int teacherId = 0;
@@ -228,7 +223,6 @@ public class StudentOptionDB(string connectionString)
 
         return new(classSetId, course, new(teacherId, title, firstName, lastName, qualification));
     }
-
     public async Task<Student> GetStudentByIdAsync(int studentId)
     {
         string firstName = string.Empty, lastName = string.Empty;
@@ -295,7 +289,7 @@ public class StudentOptionDB(string connectionString)
         using (SqlConnection connection = new(_connectionString))
         {
             connection.Open();
-            
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @$"
             SELECT COUNT(*)
@@ -311,7 +305,6 @@ public class StudentOptionDB(string connectionString)
 
         return num != 0;
     }
-
     public async Task<bool> ExistClassSetIdWithCourseAsync(Course course, int id)
     {
         int num = 0;
@@ -335,7 +328,6 @@ public class StudentOptionDB(string connectionString)
 
         return num != 0;
     }
-
     public async Task<bool> ExistStudentIdAsync(int id)
     {
         int num = 0;
