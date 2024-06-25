@@ -1,7 +1,7 @@
 SELECT s.*
 FROM ClassSets cs, ClassEnrollments ce, Students s
-WHERE ce.ClassSetID = cs.ClassSetID
-    AND ce.StudentID = s.StudentID
-    AND cs.ClassSetID = 1
+WHERE ce.ClassSetId = cs.ClassSetId
+    AND ce.StudentId = s.StudentId
+    AND cs.ClassSetId = 1
 
 -- Find all students in class 1 --
