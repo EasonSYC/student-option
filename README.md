@@ -1,4 +1,4 @@
-# Student Option Application
+# Student Option
 
 ## Database Design
 
