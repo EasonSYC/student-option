@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentOption.Data", "Stude
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentOption.Classes", "StudentOption.Classes\StudentOption.Classes.csproj", "{FDE4D4F9-B698-47DD-B504-1F42EE4BA8AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentOption.Application", "StudentOption.Application\StudentOption.Application.csproj", "{661A1E82-95A7-438F-9DBC-DD933E77EB9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentOption.Api", "StudentOption.Api\StudentOption.Api.csproj", "{193E75C0-2672-44EA-82C7-877D9232EB29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +33,10 @@ Global
 		{661A1E82-95A7-438F-9DBC-DD933E77EB9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{661A1E82-95A7-438F-9DBC-DD933E77EB9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{661A1E82-95A7-438F-9DBC-DD933E77EB9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{193E75C0-2672-44EA-82C7-877D9232EB29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{193E75C0-2672-44EA-82C7-877D9232EB29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{193E75C0-2672-44EA-82C7-877D9232EB29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{193E75C0-2672-44EA-82C7-877D9232EB29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
