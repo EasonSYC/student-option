@@ -3,7 +3,7 @@ using StudentOption.Classes;
 
 namespace StudentOption.Data;
 
-public class StudentOptionDB(string connectionString)
+public class StudentOptionDb(string connectionString)
 {
     private readonly string _connectionString = connectionString;
 

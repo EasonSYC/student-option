@@ -38,7 +38,7 @@ Please input your choice:";
 
     #endregion
     
-    private readonly StudentOptionDB _dataBase = new(connectionString);
+    private readonly StudentOptionDb _dataBase = new(connectionString);
 
     #region DisplayMethods
 
