@@ -9,22 +9,23 @@ public class StudentOptionDB(string connectionString)
 
     #region GetList
 
-    public List<Course> GetCourses()
+    public async Task<List<Course>> GetCoursesAsync()
     {
         List<Course> courses = [];
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @"
-            SELECT cs.CourseID, cs.Title, ctg.CategoryName, eb.ExamBoardName
+            SELECT cs.CourseId, cs.Title, ctg.CategoryName, eb.ExamBoardName
             FROM dbo.Courses cs, dbo.Categories ctg, dbo.ExamBoards eb
-            WHERE cs.CategoryID = ctg.CategoryID
-            AND cs.ExamBoardID = eb.ExamBoardID
-            ORDER BY cs.CourseID ASC";
-            var dataReader = command.ExecuteReader();
-            while (dataReader.Read())
+            WHERE cs.CategoryId = ctg.CategoryId
+            AND cs.ExamBoardId = eb.ExamBoardId
+            ORDER BY cs.CourseId ASC";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
+            while (dataReader.Read()) // TO-DO
             {
                 int id = dataReader.GetInt32(0);
                 string title = dataReader.GetString(1);
@@ -37,20 +38,21 @@ public class StudentOptionDB(string connectionString)
         return courses;
     }
 
-    public List<Student> GetStudents()
+    public async Task<List<Student>> GetStudentsAsync()
     {
         List<Student> students = [];
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @"
-            SELECT s.StudentID, s.FirstName, s.LastName, s.DateOfBirth
+            SELECT s.StudentId, s.FirstName, s.LastName, s.DateOfBirth
             FROM dbo.Students s
-            ORDER BY s.StudentID ASC";
-            var dataReader = command.ExecuteReader();
-            while (dataReader.Read())
+            ORDER BY s.StudentId ASC";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
+            while (dataReader.Read()) // TO-DO
             {
                 int id = dataReader.GetInt32(0);
                 string firstName = dataReader.GetString(1);
@@ -63,23 +65,24 @@ public class StudentOptionDB(string connectionString)
         return students;
     }
 
-    public List<ClassSet> GetClassSetsFromCoruse(Course course)
+    public async Task<List<ClassSet>> GetClassSetsFromCoruseAsync(Course course)
     {
         List<ClassSet> classSets = [];
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @$"
-            SELECT cls.ClassSetID, t.TeacherID, t.Title, t.FirstName, t.LastName, t.Qualification
+            SELECT cls.ClassSetId, t.TeacherId, t.Title, t.FirstName, t.LastName, t.Qualification
             FROM dbo.Courses cs, dbo.Teachers t, dbo.ClassSets cls
-            WHERE cls.CourseID = cs.CourseID
-            AND cls.TeacherID = t.TeacherID
-            AND cs.CourseID = {course.ID}
-            ORDER BY cls.ClassSetID ASC";
-            var dataReader = command.ExecuteReader();
-            while (dataReader.Read())
+            WHERE cls.CourseId = cs.CourseId
+            AND cls.TeacherId = t.TeacherId
+            AND cs.CourseId = {course.Id}
+            ORDER BY cls.ClassSetId ASC";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
+            while (dataReader.Read()) // TO-DO
             {
                 int id = dataReader.GetInt32(0);
                 int tid = dataReader.GetInt32(1);
@@ -94,23 +97,24 @@ public class StudentOptionDB(string connectionString)
         return classSets;
     }
 
-    public List<Student> GetStudentsFromClassSet(ClassSet classSet)
+    public async Task<List<Student>> GetStudentsFromClassSetAsync(ClassSet classSet)
     {
         List<Student> students = [];
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @$"
-            SELECT s.StudentID, s.FirstName, s.LastName, s.DateOfBirth
+            SELECT s.StudentId, s.FirstName, s.LastName, s.DateOfBirth
             FROM dbo.Students s, dbo.ClassEnrollments ce, dbo.ClassSets cls
-            WHERE cls.ClassSetID = ce.ClassSetID
-            AND ce.StudentID = s.StudentID
-            AND cls.ClassSetID = {classSet.ID}
-            ORDER BY s.StudentID ASC";
-            var dataReader = command.ExecuteReader();
-            while (dataReader.Read())
+            WHERE cls.ClassSetId = ce.ClassSetId
+            AND ce.StudentId = s.StudentId
+            AND cls.ClassSetId = {classSet.Id}
+            ORDER BY s.StudentId ASC";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
+            while (dataReader.Read()) // TO-DO
             {
                 int id = dataReader.GetInt32(0);
                 string firstName = dataReader.GetString(1);
@@ -124,39 +128,40 @@ public class StudentOptionDB(string connectionString)
         return students;
     }
 
-    public List<ClassSet> GetClassSetsFromStudent(Student student)
+    public async Task<List<ClassSet>> GetClassSetsFromStudentAsync(Student student)
     {
         List<ClassSet> classSets = [];
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @$"
-            SELECT cls.ClassSetID, cs.CourseID, cs.Title, cg.CategoryName, eb.ExamBoardName, t.TeacherID, t.Title, t.FirstName, t.LastName, t.qualification
+            SELECT cls.ClassSetId, cs.CourseId, cs.Title, cg.CategoryName, eb.ExamBoardName, t.TeacherId, t.Title, t.FirstName, t.LastName, t.qualification
             FROM dbo.Courses cs, dbo.Teachers t, dbo.ClassSets cls, dbo.Students s, dbo.ClassEnrollments ce, dbo.ExamBoards eb, dbo.Categories cg
-            WHERE cls.ClassSetID = ce.ClassSetID
-            AND s.StudentID = ce.StudentID
-            AND s.StudentID = {student.ID}
-            AND t.TeacherID = cls.TeacherID
-            AND cs.CourseID = cls.CourseID
-            AND cg.CategoryID = cs.CategoryID
-            AND eb.ExamBoardID = cs.ExamBoardID
-            ORDER BY cls.ClassSetID ASC";
-            var dataReader = command.ExecuteReader();
+            WHERE cls.ClassSetId = ce.ClassSetId
+            AND s.StudentId = ce.StudentId
+            AND s.StudentId = {student.Id}
+            AND t.TeacherId = cls.TeacherId
+            AND cs.CourseId = cls.CourseId
+            AND cg.CategoryId = cs.CategoryId
+            AND eb.ExamBoardId = cs.ExamBoardId
+            ORDER BY cls.ClassSetId ASC";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
             while (dataReader.Read())
             {
-                int classSetID = dataReader.GetInt32(0);
-                int courseID = dataReader.GetInt32(1);
+                int classSetId = dataReader.GetInt32(0);
+                int courseId = dataReader.GetInt32(1);
                 string courseTitle = dataReader.GetString(2);
                 string category = dataReader.GetString(3);
                 string examBoard = dataReader.GetString(4);
-                int teacherID = dataReader.GetInt32(5);
+                int teacherId = dataReader.GetInt32(5);
                 string teacherTitle = dataReader.GetString(6);
                 string firstName = dataReader.GetString(7);
                 string lastName = dataReader.GetString(8);
                 string qualification = dataReader.GetString(9);
-                classSets.Add(new(classSetID, new(courseID, category, examBoard, courseTitle), new(teacherID, teacherTitle, firstName, lastName, qualification)));
+                classSets.Add(new(classSetId, new(courseId, category, examBoard, courseTitle), new(teacherId, teacherTitle, firstName, lastName, qualification)));
             }
         }
 
@@ -166,22 +171,23 @@ public class StudentOptionDB(string connectionString)
 
     #region GetSpecific
 
-    public Course GetCourseByID(int courseID)
+    public async Task<Course> GetCourseByIdAsync(int courseId)
     {
         string title = string.Empty, category = string.Empty, examBoard = string.Empty;
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @$"
             SELECT cs.Title, ctg.CategoryName, eb.ExamBoardName
             FROM dbo.Courses cs, dbo.Categories ctg, dbo.ExamBoards eb
-            WHERE cs.CategoryID = ctg.CategoryID
-            AND cs.ExamBoardID = eb.ExamBoardID
-            AND cs.CourseID = {courseID}";
-            var dataReader = command.ExecuteReader();
-            while (dataReader.Read())
+            WHERE cs.CategoryId = ctg.CategoryId
+            AND cs.ExamBoardId = eb.ExamBoardId
+            AND cs.CourseId = {courseId}";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
+            while (dataReader.Read()) // TO-DO
             {
                 title = dataReader.GetString(0);
                 category = dataReader.GetString(1);
@@ -189,29 +195,30 @@ public class StudentOptionDB(string connectionString)
             }
         }
 
-        return new(courseID, category, examBoard, title);
+        return new(courseId, category, examBoard, title);
     }
 
-    public ClassSet GetClassSetByIDWithCourse(Course course, int classSetID)
+    public async Task<ClassSet> GetClassSetByIdWithCourseAsync(Course course, int classSetId)
     {
-        int teacherID = 0;
+        int teacherId = 0;
         string title = string.Empty, firstName = string.Empty, lastName = string.Empty, qualification = string.Empty;
 
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @$"
-            SELECT t.TeacherID, t.Title, t.FirstName, t.LastName, t.Qualification
+            SELECT t.TeacherId, t.Title, t.FirstName, t.LastName, t.Qualification
             FROM dbo.Courses cs, dbo.Teachers t, dbo.ClassSets cls
-            WHERE cls.CourseID = cs.CourseID
-            AND cls.TeacherID = t.TeacherID
-            AND cls.ClassSetID = {classSetID}";
-            var dataReader = command.ExecuteReader();
-            while (dataReader.Read())
+            WHERE cls.CourseId = cs.CourseId
+            AND cls.TeacherId = t.TeacherId
+            AND cls.ClassSetId = {classSetId}";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
+            while (dataReader.Read()) // TO-DO
             {
-                teacherID = dataReader.GetInt32(0);
+                teacherId = dataReader.GetInt32(0);
                 title = dataReader.GetString(1);
                 firstName = dataReader.GetString(2);
                 lastName = dataReader.GetString(3);
@@ -219,25 +226,26 @@ public class StudentOptionDB(string connectionString)
             }
         }
 
-        return new(classSetID, course, new(teacherID, title, firstName, lastName, qualification));
+        return new(classSetId, course, new(teacherId, title, firstName, lastName, qualification));
     }
 
-    public Student GetStudentByID(int studentID)
+    public async Task<Student> GetStudentByIdAsync(int studentId)
     {
         string firstName = string.Empty, lastName = string.Empty;
         DateOnly dateOfBirth = new();
 
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @$"
             SELECT s.FirstName, s.LastName, s.DateOfBirth
             FROM dbo.Students s
-            WHERE s.StudentID = {studentID}";
-            var dataReader = command.ExecuteReader();
-            while (dataReader.Read())
+            WHERE s.StudentId = {studentId}";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
+            while (dataReader.Read()) // TO-DO
             {
                 firstName = dataReader.GetString(0);
                 lastName = dataReader.GetString(1);
@@ -245,28 +253,29 @@ public class StudentOptionDB(string connectionString)
             }
         }
 
-        return new(studentID, firstName, lastName, dateOfBirth);
+        return new(studentId, firstName, lastName, dateOfBirth);
     }
 
     #endregion
 
     #region GetNumber
 
-    public int GetStudentNoByClassSet(ClassSet classSet)
+    public async Task<int> GetStudentNoByClassSetAsync(ClassSet classSet)
     {
         int num = 0;
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @$"
             SELECT COUNT(*)
             FROM dbo.Students s, dbo.ClassEnrollments ce, dbo.ClassSets cls
-            WHERE cls.ClassSetID = ce.ClassSetID
-            AND ce.StudentID = s.StudentID
-            AND cls.ClassSetID = {classSet.ID}";
-            var dataReader = command.ExecuteReader();
+            WHERE cls.ClassSetId = ce.ClassSetId
+            AND ce.StudentId = s.StudentId
+            AND cls.ClassSetId = {classSet.Id}";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
             while (dataReader.Read())
             {
                 num = dataReader.GetInt32(0);
@@ -280,19 +289,20 @@ public class StudentOptionDB(string connectionString)
 
     #region CheckExistance
 
-    public bool ExistCourseID(int id)
+    public async Task<bool> ExistCourseIdAsync(int id)
     {
         int num = 0;
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+            
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @$"
             SELECT COUNT(*)
             FROM dbo.Courses cs
-            WHERE cs.CourseID = {id}";
-            var dataReader = command.ExecuteReader();
+            WHERE cs.CourseId = {id}";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
             while (dataReader.Read())
             {
                 num = dataReader.GetInt32(0);
@@ -302,20 +312,21 @@ public class StudentOptionDB(string connectionString)
         return num != 0;
     }
 
-    public bool ExistClassSetIDWithCourse(Course course, int id)
+    public async Task<bool> ExistClassSetIdWithCourseAsync(Course course, int id)
     {
         int num = 0;
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @$"
             SELECT COUNT(*)
             FROM dbo.ClassSets cls
-            WHERE cls.CourseID = {course.ID}
-            AND cls.ClassSetID = {id}";
-            var dataReader = command.ExecuteReader();
+            WHERE cls.CourseId = {course.Id}
+            AND cls.ClassSetId = {id}";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
             while (dataReader.Read())
             {
                 num = dataReader.GetInt32(0);
@@ -325,19 +336,20 @@ public class StudentOptionDB(string connectionString)
         return num != 0;
     }
 
-    public bool ExistStudentID(int id)
+    public async Task<bool> ExistStudentIdAsync(int id)
     {
         int num = 0;
-        using (SqlConnection connection = new())
+        using (SqlConnection connection = new(_connectionString))
         {
-            connection.ConnectionString = _connectionString;
             connection.Open();
+
             SqlCommand command = connection.CreateCommand();
             command.CommandText = @$"
             SELECT COUNT(*)
             FROM dbo.Students s
-            WHERE s.StudentID = {id}";
-            var dataReader = command.ExecuteReader();
+            WHERE s.StudentId = {id}";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
             while (dataReader.Read())
             {
                 num = dataReader.GetInt32(0);
