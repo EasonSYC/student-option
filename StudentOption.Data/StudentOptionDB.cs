@@ -223,6 +223,42 @@ public class StudentOptionDb(string connectionString)
 
         return new(classSetId, course, new(teacherId, title, firstName, lastName, qualification));
     }
+    public async Task<ClassSet> GetClassSetByIdAsync(int classSetId)
+    {
+        int teacherId = 0, courseId = 0;
+        string teacherTitle = string.Empty, firstName = string.Empty, lastName = string.Empty, qualification = string.Empty, courseTitle = string.Empty, categoryName = string.Empty, examBoardName = string.Empty;
+
+        using (SqlConnection connection = new(_connectionString))
+        {
+            connection.Open();
+
+            SqlCommand command = connection.CreateCommand();
+            command.CommandText = @$"
+            SELECT t.TeacherId, t.Title, t.FirstName, t.LastName, t.Qualification, cs.CourseId, cs.Title, ctg.CategoryName, eb.ExamBoardName
+            FROM dbo.Courses cs, dbo.Teachers t, dbo.ClassSets cls, dbo.Categories ctg, dbo.ExamBoards eb
+            WHERE cls.CourseId = cs.CourseId
+            AND cls.TeacherId = t.TeacherId
+            AND cs.CategoryId = ctg.CategoryId
+            AND cs.ExamBoardId = eb.ExamBoardId
+            AND cls.ClassSetId = {classSetId}";
+
+            SqlDataReader dataReader = await command.ExecuteReaderAsync();
+            while (dataReader.Read()) // TO-DO
+            {
+                teacherId = dataReader.GetInt32(0);
+                teacherTitle = dataReader.GetString(1);
+                firstName = dataReader.GetString(2);
+                lastName = dataReader.GetString(3);
+                qualification = dataReader.GetString(4);
+                courseId = dataReader.GetInt32(5);
+                courseTitle = dataReader.GetString(6);
+                categoryName = dataReader.GetString(7);
+                examBoardName = dataReader.GetString(8);
+            }
+        }
+
+        return new(classSetId, new(courseId, categoryName, examBoardName, courseTitle), new(teacherId, teacherTitle, firstName, lastName, qualification));
+    }
     public async Task<Student> GetStudentByIdAsync(int studentId)
     {
         string firstName = string.Empty, lastName = string.Empty;
