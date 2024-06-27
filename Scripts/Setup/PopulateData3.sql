@@ -42,22 +42,22 @@ INSERT INTO ClassSets (TeacherId, CourseId) VALUES (24, 8)
 INSERT INTO ClassSets (TeacherId, CourseId) VALUES (25, 8)
 GO
 
-INSERT INTO ClassSets VALUES (26, 9)
-INSERT INTO ClassSets VALUES (27, 9)
-INSERT INTO ClassSets VALUES (28, 9)
-INSERT INTO ClassSets VALUES (29, 9)
-INSERT INTO ClassSets VALUES (30, 9)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (26, 9)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (27, 9)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (28, 9)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (29, 9)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (30, 9)
 GO
 
-INSERT INTO ClassSets VALUES (31, 10)
-INSERT INTO ClassSets VALUES (32, 10)
-INSERT INTO ClassSets VALUES (33, 10)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (31, 10)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (32, 10)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (33, 10)
 GO
 
-INSERT INTO ClassSets VALUES (31, 11)
-INSERT INTO ClassSets VALUES (32, 11)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (31, 11)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (32, 11)
 GO
 
-INSERT INTO ClassSets VALUES (34, 12)
-INSERT INTO ClassSets VALUES (35, 12)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (34, 12)
+INSERT INTO ClassSets (TeacherId, CourseId) VALUES (35, 12)
 GO
