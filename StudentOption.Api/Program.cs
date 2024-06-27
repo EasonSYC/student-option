@@ -1,4 +1,5 @@
 using StudentOption.Data;
+using StudentOption.Classes;
 
 namespace StudentOption.Api;
 
@@ -36,7 +37,15 @@ internal class Program
 
         app.MapGet("/course/{courseId}", async (int courseId) =>
         {
-            return Results.Ok(await db.GetCourseByIdAsync(courseId));
+            try
+            {
+                Course course = await db.GetCourseByIdAsync(courseId);
+                return Results.Ok(course);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return Results.NotFound();
+            }
         }).WithName("GetCoruseByCourseId").WithOpenApi();
 
         app.MapGet("/student", async () =>
@@ -46,12 +55,28 @@ internal class Program
 
         app.MapGet("/student/{studentId}", async (int studentId) =>
         {
-            return Results.Ok(await db.GetStudentByIdAsync(studentId));
+            try
+            {
+                Student student = await db.GetStudentByIdAsync(studentId);
+                return Results.Ok(student);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return Results.NotFound();
+            }
         }).WithName("GetStudentByStudentId").WithOpenApi();
 
         app.MapGet("/student/classset/{classSetId}", async (int classSetId) =>
         {
-            return Results.Ok(await db.GetStudentsFromClassSetAsync(await db.GetClassSetByIdAsync(classSetId)));
+            try
+            {
+                List<Student> students = await db.GetStudentsFromClassSetAsync(await db.GetClassSetByIdAsync(classSetId));
+                return Results.Ok(students);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return Results.NotFound();
+            }
         }).WithName("GetStudentByClassSetId").WithOpenApi();
 
         app.MapGet("/teacher", async () =>
@@ -61,32 +86,72 @@ internal class Program
 
         app.MapGet("/teacher/{teacherId}", async (int teacherId) =>
         {
-            return Results.Ok(await db.GetTeacherByIdAsync(teacherId));
+            try
+            {
+                Teacher teacher = await db.GetTeacherByIdAsync(teacherId);
+                return Results.Ok(teacher);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return Results.NotFound();
+            }
         }).WithName("GetTeacherByTeacherId").WithOpenApi();
 
-        app.MapGet("/classset", async () => 
+        app.MapGet("/classset", async () =>
         {
             return Results.Ok(await db.GetClassSetsAsync());
         }).WithName("GetClassSet").WithOpenApi();
 
-        app.MapGet("/classset/{classSetId}", async (int classSetId) => 
+        app.MapGet("/classset/{classSetId}", async (int classSetId) =>
         {
-            return Results.Ok(await db.GetClassSetByIdAsync(classSetId));
+            try
+            {
+                ClassSet classSet = await db.GetClassSetByIdAsync(classSetId);
+                return Results.Ok(classSet);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return Results.NotFound();
+            }
         }).WithName("GetClassSetByClassSetId").WithOpenApi();
 
-        app.MapGet("/classset/course/{courseId}", async (int courseId) => 
+        app.MapGet("/classset/course/{courseId}", async (int courseId) =>
         {
-            return Results.Ok(await db.GetClassSetsFromCoruseAsync(await db.GetCourseByIdAsync(courseId)));
+            try
+            {
+                List<ClassSet> classSets = await db.GetClassSetsFromCoruseAsync(await db.GetCourseByIdAsync(courseId));
+                return Results.Ok(classSets);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return Results.NotFound();
+            }
         }).WithName("GetClassSetByCourseId").WithOpenApi();
 
         app.MapGet("/classset/student/{studentId}", async (int studentId) =>
         {
-            return Results.Ok(await db.GetClassSetsFromStudentAsync(await db.GetStudentByIdAsync(studentId)));
+            try
+            {
+                List<ClassSet> classSets = await db.GetClassSetsFromStudentAsync(await db.GetStudentByIdAsync(studentId));
+                return Results.Ok(classSets);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return Results.NotFound();
+            }
         }).WithName("GetClassSetByStudentId").WithOpenApi();
 
         app.MapGet("/classset/teacher/{teacherId}", async (int teacherId) =>
         {
-            return Results.Ok(await db.GetClassSetsFromTeacherAsync(await db.GetTeacherByIdAsync(teacherId)));
+            try
+            {
+                List<ClassSet> classSets = await db.GetClassSetsFromTeacherAsync(await db.GetTeacherByIdAsync(teacherId));
+                return Results.Ok(classSets);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return Results.NotFound();
+            }
         }).WithName("GetClassSetByTeacherId").WithOpenApi();
 
         app.Run();
