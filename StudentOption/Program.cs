@@ -51,14 +51,14 @@ internal class Program
                 catch (NotImplementedException e)
                 {
                     Console.Clear();
-                    Console.WriteLine($"Not Implemented: {e.Source}, {e.Message}");
+                    Console.WriteLine($"Not Implemented: {e.Source}, {e.StackTrace}, {e.Message}");
                     Console.WriteLine(DbConsoleInterface.waitToContinueText);
                     Console.ReadLine();
                 }
                 catch (Exception e)
                 {
                     Console.Clear();
-                    Console.WriteLine($"Exception: {e.Source}, {e.Message}");
+                    Console.WriteLine($"Exception: {e.Source}, {e.StackTrace}, {e.Message}");
                     Console.WriteLine(DbConsoleInterface.waitToContinueText);
                     Console.ReadLine();
                 }
