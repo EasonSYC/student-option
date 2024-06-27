@@ -1,4 +1,3 @@
-using StudentOption.Classes;
 using StudentOption.Data;
 
 namespace StudentOption.Api;
@@ -55,6 +54,21 @@ internal class Program
             return Results.Ok(await db.GetStudentsFromClassSetAsync(await db.GetClassSetByIdAsync(classSetId)));
         }).WithName("GetStudentByClassSetId").WithOpenApi();
 
+        app.MapGet("/teacher", async () =>
+        {
+            return Results.Ok(await db.GetTeachersAsync());
+        }).WithName("GetTeacher").WithOpenApi();
+
+        app.MapGet("/teacher/{teacherId}", async (int teacherId) =>
+        {
+            return Results.Ok(await db.GetTeacherByIdAsync(teacherId));
+        }).WithName("GetTeacherByTeacherId").WithOpenApi();
+
+        app.MapGet("/classset", async () => 
+        {
+            return Results.Ok(await db.GetClassSetsAsync());
+        }).WithName("GetClassSet").WithOpenApi();
+
         app.MapGet("/classset/{classSetId}", async (int classSetId) => 
         {
             return Results.Ok(await db.GetClassSetByIdAsync(classSetId));
@@ -69,6 +83,11 @@ internal class Program
         {
             return Results.Ok(await db.GetClassSetsFromStudentAsync(await db.GetStudentByIdAsync(studentId)));
         }).WithName("GetClassSetByStudentId").WithOpenApi();
+
+        app.MapGet("/classset/teacher/{teacherId}", async (int teacherId) =>
+        {
+            return Results.Ok(await db.GetClassSetsFromTeacherAsync(await db.GetTeacherByIdAsync(teacherId)));
+        }).WithName("GetClassSetByTeacherId").WithOpenApi();
 
         app.Run();
     }
